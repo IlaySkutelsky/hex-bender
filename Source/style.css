@@ -1,0 +1,15 @@
+
+body {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#divMain {
+  width: 50%;
+}
+
+#jpeg {
+  width: 50%;
+  height: auto;
+}

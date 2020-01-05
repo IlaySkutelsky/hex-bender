@@ -7,13 +7,11 @@ function Session(bytes)
 {
 	// dom
 
-	Session.prototype.domElementUpdate = function()
-	{
+	Session.prototype.domElementUpdate = function()	{
 		var nibblesPerRow = 32;
 		var bytesPerRow = nibblesPerRow / 2;
 
-		if (this.domElement == null)
-		{
+		if (this.domElement == null) {
 			var d = document;
 
 			var divSession = d.createElement("div");
@@ -81,19 +79,14 @@ function Session(bytes)
 		}
 
 		var textareaHexadecimalWidthInColumns = nibblesPerRow - 1; // Not sure why -1 is needed.
-		if (this.textareaHexadecimal.scrollHeight > this.textareaHexadecimal.clientHeight)
-		{
+		if (this.textareaHexadecimal.scrollHeight > this.textareaHexadecimal.clientHeight) {
 			var scrollbarWidthInChars = 2;  // May be 3 on some systems?
 			textareaHexadecimalWidthInColumns += scrollbarWidthInChars;
 		}
 		this.textareaHexadecimal.cols = textareaHexadecimalWidthInColumns;
 
-		var bytesAsStringHexadecimal = Converter.bytesToStringHexadecimal
-		(
-			this.bytes
-		);
-		this.textareaHexadecimal.value =
-			bytesAsStringHexadecimal + this.finalNibble;
+		var bytesAsStringHexadecimal = Converter.bytesToStringHexadecimal(this.bytes);
+		this.textareaHexadecimal.value = bytesAsStringHexadecimal + this.finalNibble;
 
 		var charsPerByte = 2;
 		var cursorPos = Math.floor(this.textareaHexadecimal.selectionStart / charsPerByte);
@@ -111,8 +104,7 @@ function Session(bytes)
 		var scrollOffsetInBytes = scrollOffsetInRows * bytesPerRow;
 		var offsetsAsStrings = [];
 		var bytesForRowsAsASCII = [];
-		for (var i = 0; i < rowsVisible; i++)
-		{
+		for (var i = 0; i < rowsVisible; i++) {
 			var offsetForRow = scrollOffsetInBytes + (i * bytesPerRow);
 			var offsetForRowAsHexadecimal = offsetForRow.toString(16)
 			offsetsAsStrings.push(offsetForRowAsHexadecimal);
@@ -132,87 +124,87 @@ function Session(bytes)
 
 	// events
 
-	Session.prototype.buttonSave_Clicked = function()
-	{
+	Session.prototype.buttonSave_Clicked = function() {
 		var dataAsArrayBuffer = new ArrayBuffer(this.bytes.length);
 		var dataAsArrayUnsigned = new Uint8Array(dataAsArrayBuffer);
-		for (var i = 0; i < this.bytes.length; i++)
-		{
+		for (var i = 0; i < this.bytes.length; i++) {
 			dataAsArrayUnsigned[i] = this.bytes[i];
 		}
 		var dataAsBlob = new Blob([dataAsArrayBuffer], {type:'bytes'});
 
-
 		var link = document.createElement("a");
 		link.href = window.URL.createObjectURL(dataAsBlob);
-		link.download = "Data.bin";
+		link.download = "glitched.jpeg";
 		link.click();
 	}
 
-	Session.prototype.inputFileToLoad_Changed = function(event)
-	{
+	Session.prototype.inputFileToLoad_Changed = function(event) {
+
 		var inputFileToLoad = event.target;
 		var fileToLoad = inputFileToLoad.files[0];
-		if (fileToLoad != null)
-		{
+		if (fileToLoad != null) {
 			var fileReader = new FileReader();
 			fileReader.onload = this.inputFileToLoad_Changed_Loaded.bind(this);
 			fileReader.readAsBinaryString(fileToLoad);
 		}
 	}
 
-	Session.prototype.inputFileToLoad_Changed_Loaded = function(fileLoadedEvent)
-	{
+	Session.prototype.inputFileToLoad_Changed_Loaded = function(fileLoadedEvent) {
 		var dataAsBinaryString = fileLoadedEvent.target.result;
 
 		this.bytes = [];
 
-		for (var i = 0; i < dataAsBinaryString.length; i++)
-		{
+		for (var i = 0; i < dataAsBinaryString.length; i++) {
 			var byte = dataAsBinaryString.charCodeAt(i);
 			this.bytes.push(byte);
 		}
 
+		var img = document.querySelector( "#jpeg" );
+		img.src = "data:image/jpeg;base64," + btoa(dataAsBinaryString);
+
 		this.domElementUpdate();
 	}
 
-	Session.prototype.textareaHexadecimal_Changed = function(event)
-	{
+	Session.prototype.textareaHexadecimal_Changed = function(event) {
 		var bytesAsStringHexadecimal = event.target.value;
-		this.bytes = Converter.stringHexadecimalToBytes
-		(
-			bytesAsStringHexadecimal
-		);
+		this.bytes = Converter.stringHexadecimalToBytes(bytesAsStringHexadecimal);
 
-		if (bytesAsStringHexadecimal.length % 2 == 0)
-		{
+		if (bytesAsStringHexadecimal.length % 2 == 0) {
 			this.finalNibble = "";
 		}
-		else
-		{
-			this.finalNibble = bytesAsStringHexadecimal.substr
-			(
-				bytesAsStringHexadecimal.length - 1,
-				1
-			);
+		else {
+			this.finalNibble = bytesAsStringHexadecimal.substr(bytesAsStringHexadecimal.length - 1, 1);
 
 			var finalNibbleAsInt = parseInt(this.finalNibble, 16);
-			if (isNaN(finalNibbleAsInt) == true)
-			{
+			if (isNaN(finalNibbleAsInt) == true) {
 				this.finalNibble = "";
 			}
 		}
 
+		this.imgElementUpdate();
+
 		this.domElementUpdate();
 	}
 
-	Session.prototype.textareaHexadecimal_KeyUp = function(event)
-	{
-		var keyName = event.key;
-		if (keyName.startsWith("Arrow") || keyName == "Home" || keyName == "End")
+	Session.prototype.imgElementUpdate = function() {
+		var dataAsArrayBuffer = new ArrayBuffer(this.bytes.length);
+		var dataAsArrayUnsigned = new Uint8Array(dataAsArrayBuffer);
+		for (var i = 0; i < this.bytes.length; i++)
 		{
+			dataAsArrayUnsigned[i] = this.bytes[i];
+		}
+		var dataAsBlob = new Blob([dataAsArrayBuffer],  { type: "image/jpeg" } );
+
+		var urlCreator = window.URL || window.webkitURL;
+		var imageUrl = urlCreator.createObjectURL( dataAsBlob );
+		var img = document.querySelector( "#jpeg" );
+		img.src = imageUrl;
+	}
+
+	Session.prototype.textareaHexadecimal_KeyUp = function(event) {
+		var keyName = event.key;
+		if (keyName.startsWith("Arrow") || keyName == "Home" || keyName == "End") {
 			this.domElementUpdate();
 		}
 	}
-
 }
