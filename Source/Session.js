@@ -57,37 +57,6 @@ function Session(bytes)
 		var bytesAsStringHexadecimal = Converter.bytesToStringHexadecimal(this.bytes);
 		this.textareaHexadecimal.value = bytesAsStringHexadecimal + this.finalNibble;
 
-		var charsPerByte = 2;
-		var cursorPos = Math.floor(this.textareaHexadecimal.selectionStart / charsPerByte);
-		var cursorPosAsString =
-			"0x" + cursorPos.toString(16)
-			+ "; 0d" + cursorPos
-			+ "; 0b" + cursorPos.toString(2);
-
-		this.inputCursorPosition.value = cursorPosAsString;
-
-		// var rowsVisible = this.textareaHexadecimal.rows;
-		// var rowHeightInPixels = this.textareaHexadecimal.offsetHeight / rowsVisible;
-		// var scrollOffsetInPixels = this.textareaHexadecimal.scrollTop;
-		// var scrollOffsetInRows = Math.round(scrollOffsetInPixels / rowHeightInPixels);
-		// var scrollOffsetInBytes = scrollOffsetInRows * bytesPerRow;
-		// var offsetsAsStrings = [];
-		// var bytesForRowsAsASCII = [];
-		// for (var i = 0; i < rowsVisible; i++) {
-		// 	var offsetForRow = scrollOffsetInBytes + (i * bytesPerRow);
-		// 	var offsetForRowAsHexadecimal = offsetForRow.toString(16)
-		// 	offsetsAsStrings.push(offsetForRowAsHexadecimal);
-		//
-		// 	var bytesForRow = this.bytes.slice(offsetForRow, offsetForRow + bytesPerRow);
-		// 	var bytesForRowAsASCII = Converter.bytesToStringASCII(bytesForRow)
-		// 	bytesForRowsAsASCII.push(bytesForRowAsASCII);
-		// }
-		// var offsetsAsString = offsetsAsStrings.join("\n");
-		// this.textareaOffsets.value = offsetsAsString;
-
-		// var bytesAsStringASCII = bytesForRowsAsASCII.join("\n");
-		// this.textareaASCII.value = bytesAsStringASCII;
-
 		return this.domElement;
 	}
 
