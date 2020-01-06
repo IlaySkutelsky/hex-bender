@@ -41,19 +41,6 @@ function Session(bytes)
 
 			divSession.appendChild(divFileOperations);
 
-			var divCursor = d.createElement("div");
-
-			var labelCursorPosition = d.createElement("label");
-			labelCursorPosition.innerHTML = "Cursor Position:";
-			divCursor.appendChild(labelCursorPosition);
-
-			var inputCursorPosition = d.createElement("input");
-			inputCursorPosition.disabled = true;
-			this.inputCursorPosition = inputCursorPosition;
-			divCursor.appendChild(inputCursorPosition);
-
-			divSession.appendChild(divCursor);
-
 			var divMain = d.getElementById("divMain");
 			divMain.appendChild(divSession);
 
