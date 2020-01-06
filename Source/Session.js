@@ -94,6 +94,10 @@ function Session(bytes)
 
 		for (var i = 0; i < dataAsBinaryString.length; i++) {
 			var byte = dataAsBinaryString.charCodeAt(i);
+			if (i === 0) {
+				sliderInputHandler(byte)
+				textInputHandler(byte)
+			}
 			this.bytes.push(byte);
 		}
 
@@ -145,4 +149,14 @@ function Session(bytes)
 			this.domElementUpdate();
 		}
 	}
+}
+
+function textInputHandle(value) {
+	let elm = document.querySelector('input.slider-input')
+	elm.value = parseInt(value, 16);
+}
+
+function sliderInputHandler(value) {
+	let elm = document.querySelector('input.text-input')
+	elm.value = (+value).toString(16);
 }

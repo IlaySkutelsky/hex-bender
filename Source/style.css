@@ -1,3 +1,6 @@
+* {
+  box-sizing: border-box;
+}
 
 body {
   display: flex;
@@ -12,4 +15,27 @@ body {
 #jpeg {
   width: 50%;
   height: auto;
+}
+
+.hidden {
+  display: none;
+}
+
+.input-wrapper {
+  position: relative;
+}
+
+input.text-input {
+  border: none;
+  background-color: #eee;
+  box-shadow: none;
+  padding: 0.5em;
+  width: 2.3em;
+}
+
+input.slider-input {
+  position: absolute;
+  top: 2em;
+  transform: translateX(-60%);
+  width: 12em;
 }

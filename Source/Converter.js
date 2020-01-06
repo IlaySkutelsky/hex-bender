@@ -1,13 +1,13 @@
- 
+
 // classes
- 
+
 function Converter()
 {
 	// static class
 }
 
 {
-	Converter.AsciiCharacters = 
+	Converter.AsciiCharacters =
 		"␀☺☻♥♦♣♠•◘○◙♂♀♪♫☼►" // 0-16
 		+ "◄↕‼¶§▬↨↑↓→←∟↔▲▼␠" // 17-32
 		+ "!\"#$%&'()*+,-./0" // 33-48
@@ -24,43 +24,43 @@ function Converter()
 		+ "╤╥╙╘╒╓╫╪┘Ç█▄▌▐▀α" // 209-224
 		+ "ßΓπΣσµτΦΘΩδ∞φε∩≡" // 225-240
 		+ "±≥≤⌠⌡÷≈°∙·√ⁿ²■⍽"; //241-255 
- 
+
 	Converter.bytesToStringASCII = function(bytes)
 	{
 		var returnValue = "";
- 
+
 		for (var i = 0; i < bytes.length; i++)
 		{
 			var byte = bytes[i];
-			var byteAsCharASCII = String.fromCharCode(Converter.AsciiCharacters.codePointAt(byte)); 
+			var byteAsCharASCII = String.fromCharCode(Converter.AsciiCharacters.codePointAt(byte));
 			returnValue += byteAsCharASCII;
 		}
- 
+
 		return returnValue;
 	}
- 
+
 	Converter.bytesToStringHexadecimal = function(bytes)
 	{
 		var returnValue = "";
- 
+
 		for (var i = 0; i < bytes.length; i++)
 		{
 			var byte = bytes[i];
-			var byteAsStringHexadecimal = 
-				byte.toString(16).padLeft(2, '0');
- 
+			var byteAsStringHexadecimal =
+				byte.toString(16).padStart(2, '0');
+
 			returnValue += byteAsStringHexadecimal;
 		}
- 
+
 		return returnValue;
 	}
- 
+
 	Converter.stringHexadecimalToBytes = function(stringHexadecimal)
 	{
 		var returnValues = [];
- 
+
 		var nibblesForByteCurrent = [];
- 
+
 		for (i = 0; i < stringHexadecimal.length; i++)
 		{
 			var charForNibble = stringHexadecimal[i];
@@ -70,15 +70,15 @@ function Converter()
 				nibblesForByteCurrent.push(nibbleAsInt);
 				if (nibblesForByteCurrent.length == 2)
 				{
-					var byte = 
-						(nibblesForByteCurrent[0] << 4) 
+					var byte =
+						(nibblesForByteCurrent[0] << 4)
 						+ nibblesForByteCurrent[1];
 					returnValues.push(byte);
 					nibblesForByteCurrent.length = 0;
 				}
-			}		   
+			}
 		}
- 
+
 		return returnValues;
-	}   
+	}
 }
