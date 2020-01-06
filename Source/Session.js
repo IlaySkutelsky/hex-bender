@@ -8,7 +8,7 @@ function Session(bytes)
 	// dom
 
 	Session.prototype.domElementUpdate = function()	{
-		var nibblesPerRow = 32;
+		var nibblesPerRow = 64;
 		var bytesPerRow = nibblesPerRow / 2;
 
 		if (this.domElement == null) {
@@ -18,15 +18,6 @@ function Session(bytes)
 
 			var rowCount = 32;
 
-			var textareaOffsets = d.createElement("textarea")
-			textareaOffsets.cols = 8;
-			textareaOffsets.rows = rowCount;
-			textareaOffsets.disabled = true;
-			textareaOffsets.style.resize = "none";
-			textareaOffsets.spellcheck = false;
-			this.textareaOffsets = textareaOffsets;
-			divSession.appendChild(textareaOffsets);
-
 			var textareaHexadecimal = d.createElement("textarea");
 			textareaHexadecimal.rows = rowCount;
 			textareaHexadecimal.onkeyup = this.textareaHexadecimal_KeyUp.bind(this);
@@ -35,15 +26,6 @@ function Session(bytes)
 			textareaHexadecimal.spellcheck = false;
 			this.textareaHexadecimal = textareaHexadecimal;
 			divSession.appendChild(textareaHexadecimal);
-
-			var textareaASCII = d.createElement("textarea");
-			textareaASCII.cols = bytesPerRow - 1; // Not sure why -1 is needed.
-			textareaASCII.rows = rowCount;
-			textareaASCII.disabled = true;
-			textareaASCII.style.resize = "none";
-			textareaASCII.spellcheck = false;
-			this.textareaASCII = textareaASCII;
-			divSession.appendChild(textareaASCII);
 
 			var divFileOperations = d.createElement("div");
 
@@ -97,27 +79,27 @@ function Session(bytes)
 
 		this.inputCursorPosition.value = cursorPosAsString;
 
-		var rowsVisible = this.textareaHexadecimal.rows;
-		var rowHeightInPixels = this.textareaHexadecimal.offsetHeight / rowsVisible;
-		var scrollOffsetInPixels = this.textareaHexadecimal.scrollTop;
-		var scrollOffsetInRows = Math.round(scrollOffsetInPixels / rowHeightInPixels);
-		var scrollOffsetInBytes = scrollOffsetInRows * bytesPerRow;
-		var offsetsAsStrings = [];
-		var bytesForRowsAsASCII = [];
-		for (var i = 0; i < rowsVisible; i++) {
-			var offsetForRow = scrollOffsetInBytes + (i * bytesPerRow);
-			var offsetForRowAsHexadecimal = offsetForRow.toString(16)
-			offsetsAsStrings.push(offsetForRowAsHexadecimal);
+		// var rowsVisible = this.textareaHexadecimal.rows;
+		// var rowHeightInPixels = this.textareaHexadecimal.offsetHeight / rowsVisible;
+		// var scrollOffsetInPixels = this.textareaHexadecimal.scrollTop;
+		// var scrollOffsetInRows = Math.round(scrollOffsetInPixels / rowHeightInPixels);
+		// var scrollOffsetInBytes = scrollOffsetInRows * bytesPerRow;
+		// var offsetsAsStrings = [];
+		// var bytesForRowsAsASCII = [];
+		// for (var i = 0; i < rowsVisible; i++) {
+		// 	var offsetForRow = scrollOffsetInBytes + (i * bytesPerRow);
+		// 	var offsetForRowAsHexadecimal = offsetForRow.toString(16)
+		// 	offsetsAsStrings.push(offsetForRowAsHexadecimal);
+		//
+		// 	var bytesForRow = this.bytes.slice(offsetForRow, offsetForRow + bytesPerRow);
+		// 	var bytesForRowAsASCII = Converter.bytesToStringASCII(bytesForRow)
+		// 	bytesForRowsAsASCII.push(bytesForRowAsASCII);
+		// }
+		// var offsetsAsString = offsetsAsStrings.join("\n");
+		// this.textareaOffsets.value = offsetsAsString;
 
-			var bytesForRow = this.bytes.slice(offsetForRow, offsetForRow + bytesPerRow);
-			var bytesForRowAsASCII = Converter.bytesToStringASCII(bytesForRow)
-			bytesForRowsAsASCII.push(bytesForRowAsASCII);
-		}
-		var offsetsAsString = offsetsAsStrings.join("\n");
-		this.textareaOffsets.value = offsetsAsString;
-
-		var bytesAsStringASCII = bytesForRowsAsASCII.join("\n");
-		this.textareaASCII.value = bytesAsStringASCII;
+		// var bytesAsStringASCII = bytesForRowsAsASCII.join("\n");
+		// this.textareaASCII.value = bytesAsStringASCII;
 
 		return this.domElement;
 	}
