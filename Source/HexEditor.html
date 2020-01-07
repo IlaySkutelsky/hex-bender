@@ -10,16 +10,17 @@
   </head>
 <body>
   <div id="divMain">
-    <textarea rows="32" style="resize: none;" spellcheck="false" cols="63"
-              onkeyup="textareaHexadecimal_KeyUp(event)" oninput="textareaHexadecimal_Changed(event)">
-    </textarea>
+    <div class="editor">
     <div class="buttons-wrapper">
       <button type="button" onclick="buttonSave_Clicked(event)">
         Save
       </button>
       <input type="file" onchange="inputFileToLoad_Changed(event)">
     </div>
+      <textarea rows="32" style="resize: none;" spellcheck="false" cols="63"
+      onkeyup="textareaHexadecimal_KeyUp(event)" oninput="textareaHexadecimal_Changed(event)">
+    </textarea>
+    </div>
   </div>
   <img id="jpeg">
-  <div class="new-inputs-wrapper"></div>
 </html>
