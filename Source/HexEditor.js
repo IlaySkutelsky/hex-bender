@@ -8,6 +8,11 @@ function domElementUpdate()	{
   let textareaHexadecimal = document.querySelector('textarea')
 	let bytesAsStringHexadecimal = Converter.bytesToStringHexadecimal(bytes);
 	textareaHexadecimal.value = bytesAsStringHexadecimal + finalNibble;
+
+  let originalCharsSpanElm = document.querySelector('.original-chars span')
+  let currentCharsSpanElm = document.querySelector('.current-chars span')
+  originalCharsSpanElm.innerText = textareaHexadecimal.value.length
+  currentCharsSpanElm.innerText = textareaHexadecimal.value.length
 }
 
 function buttonSave_Clicked() {
@@ -55,7 +60,12 @@ function inputFileToLoad_Changed_Loaded(fileLoadedEvent) {
 }
 
 function textareaHexadecimal_Changed(event) {
+  // if (!([A-Fa-f0-9]).test(event.key))
+
 	let bytesAsStringHexadecimal = event.target.value;
+  let currentCharsSpanElm = document.querySelector('.current-chars span')
+  currentCharsSpanElm.innerText = bytesAsStringHexadecimal.length
+
 	bytes = Converter.stringHexadecimalToBytes(bytesAsStringHexadecimal);
 
 	if (bytesAsStringHexadecimal.length % 2 == 0) {
