@@ -1,38 +1,25 @@
-<html>
-<link rel="stylesheet" href="./style.css">
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <script type="text/javascript" src="Converter.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="main.js"></script>
+    <script type="text/javascript" src="HexEditor.js"></script>
+    <link rel="stylesheet" href="./style.css">
+    <meta charset="utf-8">
+    <title>HexBender</title>
+  </head>
 <body>
-
-<div id="divMain">
-  <textarea rows="32" style="resize: none;" spellcheck="false" cols="63"
-            onkeyup="textareaHexadecimal_KeyUp(event)" oninput="textareaHexadecimal_Changed(event)">
-  </textarea>
-  <div class="buttons-wrapper">
-    <button type="button" onclick="buttonSave_Clicked(event)">
-      Save
-    </button>
-    <input type="file" onchange="inputFileToLoad_Changed(event)">
+  <div id="divMain">
+    <textarea rows="32" style="resize: none;" spellcheck="false" cols="63"
+              onkeyup="textareaHexadecimal_KeyUp(event)" oninput="textareaHexadecimal_Changed(event)">
+    </textarea>
+    <div class="buttons-wrapper">
+      <button type="button" onclick="buttonSave_Clicked(event)">
+        Save
+      </button>
+      <input type="file" onchange="inputFileToLoad_Changed(event)">
+    </div>
   </div>
-
-</div>
-<img id="jpeg">
-<div class="new-inputs-wrapper"></div>
-
-
-<!-- <script type="text/javascript" src="StringExtensions.js"></script> -->
-<script type="text/javascript" src="Converter.js" charset="UTF-8"></script>
-<!-- <script type="text/javascript" src="Globals.js"></script> -->
-<!-- <script type="text/javascript" src="Session.js"></script> -->
-<script type="text/javascript" src="main.js"></script>
-<script type="text/javascript" src="HexEditor.js"></script>
-<script type="text/javascript">
-
-//
-// function main()
-// {
-//     var session = new Session([]);
-//
-//     Globals.Instance.initialize(session);
-// }
-//
-// main();
-</script>
+  <img id="jpeg">
+  <div class="new-inputs-wrapper"></div>
+</html>

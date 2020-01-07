@@ -1,16 +1,14 @@
 
 let bytes
 let finalNibble = ""
-
-	// dom
+let categoryMIME = "image"
+let typeMIME = " "
 
 function domElementUpdate()	{
   let textareaHexadecimal = document.querySelector('textarea')
 	var bytesAsStringHexadecimal = Converter.bytesToStringHexadecimal(bytes);
 	textareaHexadecimal.value = bytesAsStringHexadecimal + finalNibble;
 }
-
-	// events
 
 function buttonSave_Clicked() {
 	var dataAsArrayBuffer = new ArrayBuffer(bytes.length);
@@ -30,6 +28,9 @@ function inputFileToLoad_Changed(event) {
 	var inputFileToLoad = event.target;
 	var fileToLoad = inputFileToLoad.files[0];
 	if (fileToLoad != null) {
+    let arrayMIMEString = fileToLoad.type.split('/')
+    categoryMIME = arrayMIMEString[0]
+    typeMIME = arrayMIMEString[1]
 		var fileReader = new FileReader();
 		fileReader.onload = inputFileToLoad_Changed_Loaded.bind(this);
 		fileReader.readAsBinaryString(fileToLoad);
@@ -38,20 +39,17 @@ function inputFileToLoad_Changed(event) {
 
 function inputFileToLoad_Changed_Loaded(fileLoadedEvent) {
 	var dataAsBinaryString = fileLoadedEvent.target.result;
+  // let files = fileLoadedEvent.target.files
 
 	bytes = [];
 
 	for (var i = 0; i < dataAsBinaryString.length; i++) {
 		var byte = dataAsBinaryString.charCodeAt(i);
-		// if (i === 9) {
-		// 	sliderInputHandler(byte)
-		// 	textInputHandler(byte)
-		// }
 		bytes.push(byte);
 	}
 
 	var img = document.querySelector( "#jpeg" );
-	img.src = "data:image/jpeg;base64," + btoa(dataAsBinaryString);
+	img.src = `data:${categoryMIME}/${typeMIME};base64, ${btoa(dataAsBinaryString)}`;
 
 	domElementUpdate();
 }
@@ -72,31 +70,30 @@ function textareaHexadecimal_Changed(event) {
 		}
 	}
 
-
   debounce(imgElementUpdate, 400)();
-	// imgElementUpdate();
-
-	domElementUpdate();
 }
 
 function imgElementUpdate() {
+  debugger
 	var dataAsArrayBuffer = new ArrayBuffer(bytes.length);
-	var dataAsArrayUnsigned = new Uint8Array(dataAsArrayBuffer);
+  var dataAsArrayUnsigned = new Uint8Array(dataAsArrayBuffer);
 	for (var i = 0; i < bytes.length; i++)
 	{
 		dataAsArrayUnsigned[i] = bytes[i];
 	}
-	var dataAsBlob = new Blob([dataAsArrayBuffer],  { type: "image/jpeg" } );
+	// var dataAsBlob = new Blob([dataAsArrayBuffer],  { type: "image/jpeg" } );
+
+  var dataAsUint8 = new Uint8Array(bytes);
+
+  var dataAsBlob
+  if (typeMIME==='jpeg') {
+    dataAsBlob = new Blob([dataAsArrayBuffer],  { type: `${categoryMIME}/${typeMIME}` } );
+  } else if (typeMIME==='png' || typeMIME==='gif'){
+    dataAsBlob = new Blob([dataAsUint8],  { type: `${categoryMIME}/${typeMIME}` } );
+  }
 
 	var urlCreator = window.URL || window.webkitURL;
 	var imageUrl = urlCreator.createObjectURL( dataAsBlob );
 	var img = document.querySelector( "#jpeg" );
 	img.src = imageUrl;
-}
-
-function textareaHexadecimal_KeyUp(event) {
-	var keyName = event.key;
-	if (keyName.startsWith("Arrow") || keyName == "Home" || keyName == "End") {
-		domElementUpdate();
-	}
 }
