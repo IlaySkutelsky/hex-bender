@@ -1,18 +1,17 @@
 
 let bytes
-let finalNibble = ""
 let categoryMIME = "image"
 let typeMIME = " "
 
 function domElementUpdate()	{
-  let textareaHexadecimal = document.querySelector('textarea')
+  let divHexadecimal = document.querySelector('.editable-div')
 	let bytesAsStringHexadecimal = Converter.bytesToStringHexadecimal(bytes);
-	textareaHexadecimal.value = bytesAsStringHexadecimal + finalNibble;
+  divHexadecimal.innerText = bytesAsStringHexadecimal;
 
   let originalCharsSpanElm = document.querySelector('.original-chars span')
   let currentCharsSpanElm = document.querySelector('.current-chars span')
-  originalCharsSpanElm.innerText = textareaHexadecimal.value.length
-  currentCharsSpanElm.innerText = textareaHexadecimal.value.length
+  originalCharsSpanElm.innerText = divHexadecimal.innerText.length
+  currentCharsSpanElm.innerText = divHexadecimal.innerText.length
 }
 
 function buttonSave_Clicked() {
@@ -46,52 +45,42 @@ function inputFileToLoad_Changed_Loaded(fileLoadedEvent) {
 	let dataAsBinaryString = fileLoadedEvent.target.result;
   // let files = fileLoadedEvent.target.files
 
-	bytes = [];
+  bytes = [];
 
 	for (let i = 0; i < dataAsBinaryString.length; i++) {
 		let byte = dataAsBinaryString.charCodeAt(i);
-		bytes.push(byte);
+    bytes.push(byte);
 	}
 
-	let img = document.querySelector( "#jpeg" );
-	img.src = `data:${categoryMIME}/${typeMIME};base64, ${btoa(dataAsBinaryString)}`;
+  let img = document.querySelector( "#jpeg" );
+  img.src = `data:${categoryMIME}/${typeMIME};base64, ${btoa(dataAsBinaryString)}`;
 
 	domElementUpdate();
 }
 
 function textareaHexadecimal_Changed(event) {
-  // if (!([A-Fa-f0-9]).test(event.key))
+  // console.log((/[A-Fa-f0-9]/).test(event.key));
+  if (!(/[A-Fa-f0-9]/).test(event.key)) {
+    event.preventDefault()
+    return
+  }
 
-	let bytesAsStringHexadecimal = event.target.value;
+	let bytesAsStringHexadecimal = event.target.innerText;
   let currentCharsSpanElm = document.querySelector('.current-chars span')
   currentCharsSpanElm.innerText = bytesAsStringHexadecimal.length
 
 	bytes = Converter.stringHexadecimalToBytes(bytesAsStringHexadecimal);
 
-	if (bytesAsStringHexadecimal.length % 2 == 0) {
-		finalNibble = "";
-	}
-	else {
-		finalNibble = bytesAsStringHexadecimal.substr(bytesAsStringHexadecimal.length - 1, 1);
-
-		let finalNibbleAsInt = parseInt(finalNibble, 16);
-		if (isNaN(finalNibbleAsInt) == true) {
-			finalNibble = "";
-		}
-	}
-
   debounce(imgElementUpdate, 400)();
 }
 
 function imgElementUpdate() {
-  debugger
 	let dataAsArrayBuffer = new ArrayBuffer(bytes.length);
   let dataAsArrayUnsigned = new Uint8Array(dataAsArrayBuffer);
 	for (let i = 0; i < bytes.length; i++)
 	{
 		dataAsArrayUnsigned[i] = bytes[i];
 	}
-	// let dataAsBlob = new Blob([dataAsArrayBuffer],  { type: "image/jpeg" } );
 
   let dataAsUint8 = new Uint8Array(bytes);
 

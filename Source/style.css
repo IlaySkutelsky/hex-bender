@@ -5,11 +5,19 @@
 body {
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
 }
 
 #divMain {
   width: 50%;
+}
+
+.editable-div {
+  width: 32em;
+  height: 20em;
+  overflow-y: scroll;
+  outline: 1px solid #ddd;
+  word-wrap: break-word;
 }
 
 #jpeg {
