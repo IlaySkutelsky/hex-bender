@@ -19,7 +19,20 @@
     </div>
 
       <div class="editable-div" contenteditable="true"
-        onkeyup="textareaHexadecimal_Changed(event)">
+           placeholder="/// Hi! This is HexBender, a web-based live hex editor for glitching.
+
+           1. Click 'Browse' and upload the image you want to glitch.
+              Right now the only supported formats are JPEG (*.jpeg, *jpg) and GIF (*.GIF)
+
+           2. Start glitching! Change the data using hexadecimal characters (0-9,a-f).
+              Make sure the original amount of characters is kept.
+              If the image breaks use ctrl+z to undo.
+
+           3. When your'e happy with your glitched image save it using the 'Save' button.
+
+           Happy glitching!
+           "
+           onkeyup="textareaHexadecimal_Changed(event)">
       </div>
       <div class="original-chars">
         Original amount of characters: <span></span>

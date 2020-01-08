@@ -18,6 +18,7 @@ body {
   overflow-y: scroll;
   outline: 1px solid #ddd;
   word-wrap: break-word;
+  font-size: 0.9em
 }
 
 #jpeg {
@@ -31,4 +32,15 @@ body {
 
 .buttons-wrapper {
   padding: 5px;
+}
+
+[placeholder]::before {
+    content: attr(placeholder);
+    color: #777;
+    white-space: pre-line;
+    font-size: 0.8em
+}
+
+[placeholder]:focus::before {
+    content: "";
 }
